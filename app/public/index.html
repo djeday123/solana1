@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana DEX - Student Edition</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="logo">
+                    <h1>📚 Solana DEX</h1>
+                    <span class="subtitle">Educational DeFi for Students</span>
+                </div>
+                <div class="wallet-connection">
+                    <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
+                    <div id="walletInfo" class="wallet-info hidden">
+                        <span class="address" id="walletAddress"></span>
+                        <button id="disconnect" class="btn btn-secondary">Disconnect</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <!-- Welcome Section -->
+                <section class="welcome">
+                    <h2>Welcome to the Educational Solana DEX</h2>
+                    <p>Learn DeFi concepts by trading tokens on Solana. This DEX demonstrates:</p>
+                    <ul>
+                        <li>🔄 Automated Market Making (AMM)</li>
+                        <li>💧 Liquidity Pools</li>
+                        <li>⚡ Fast Solana Transactions</li>
+                        <li>📊 Real-time Price Discovery</li>
+                    </ul>
+                </section>
+
+                <!-- Trading Interface -->
+                <section class="trading-section">
+                    <div class="trading-panel">
+                        <h3>Swap Tokens</h3>
+                        <div class="swap-container">
+                            <div class="token-input">
+                                <label>From</label>
+                                <div class="input-group">
+                                    <input type="number" id="fromAmount" placeholder="0.0" step="0.000001">
+                                    <select id="fromToken">
+                                        <option value="SOL">SOL</option>
+                                        <option value="USDC">USDC</option>
+                                        <option value="TOKEN_A">TOKEN A</option>
+                                        <option value="TOKEN_B">TOKEN B</option>
+                                    </select>
+                                </div>
+                                <div class="balance">Balance: <span id="fromBalance">0.0</span></div>
+                            </div>
+
+                            <div class="swap-arrow">
+                                <button id="swapDirection" class="swap-btn">🔄</button>
+                            </div>
+
+                            <div class="token-input">
+                                <label>To</label>
+                                <div class="input-group">
+                                    <input type="number" id="toAmount" placeholder="0.0" readonly>
+                                    <select id="toToken">
+                                        <option value="USDC">USDC</option>
+                                        <option value="SOL">SOL</option>
+                                        <option value="TOKEN_A">TOKEN A</option>
+                                        <option value="TOKEN_B">TOKEN B</option>
+                                    </select>
+                                </div>
+                                <div class="balance">Balance: <span id="toBalance">0.0</span></div>
+                            </div>
+
+                            <div class="swap-info">
+                                <div class="price-info">
+                                    <span>Rate: <span id="exchangeRate">1 SOL = 0 USDC</span></span>
+                                    <span>Fee: <span id="swapFee">0.3%</span></span>
+                                </div>
+                                <div class="slippage">
+                                    <label>Slippage Tolerance: <span id="slippageValue">0.5%</span></label>
+                                    <input type="range" id="slippageSlider" min="0.1" max="5" step="0.1" value="0.5">
+                                </div>
+                            </div>
+
+                            <button id="swapButton" class="btn btn-primary btn-large" disabled>
+                                Connect wallet to swap
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Liquidity Panel -->
+                    <div class="liquidity-panel">
+                        <h3>Add Liquidity</h3>
+                        <div class="liquidity-container">
+                            <div class="token-pair-input">
+                                <div class="token-input">
+                                    <label>Token A Amount</label>
+                                    <div class="input-group">
+                                        <input type="number" id="liquidityAmountA" placeholder="0.0" step="0.000001">
+                                        <span class="token-symbol">TOKEN A</span>
+                                    </div>
+                                </div>
+                                <div class="plus-sign">+</div>
+                                <div class="token-input">
+                                    <label>Token B Amount</label>
+                                    <div class="input-group">
+                                        <input type="number" id="liquidityAmountB" placeholder="0.0" step="0.000001">
+                                        <span class="token-symbol">TOKEN B</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="liquidity-info">
+                                <div>Pool Share: <span id="poolShare">0%</span></div>
+                                <div>LP Tokens: <span id="lpTokens">0</span></div>
+                            </div>
+
+                            <button id="addLiquidityButton" class="btn btn-secondary btn-large" disabled>
+                                Connect wallet to add liquidity
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Pool Information -->
+                <section class="pool-info">
+                    <h3>Pool Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>Total Value Locked</h4>
+                            <div class="stat-value" id="tvl">$0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>24h Volume</h4>
+                            <div class="stat-value" id="volume24h">$0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Total Liquidity Providers</h4>
+                            <div class="stat-value" id="totalLPs">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Current APR</h4>
+                            <div class="stat-value" id="currentAPR">0%</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Educational Content -->
+                <section class="educational">
+                    <h3>Learn DeFi Concepts</h3>
+                    <div class="concept-cards">
+                        <div class="concept-card">
+                            <h4>🤖 Automated Market Maker (AMM)</h4>
+                            <p>DEXs use mathematical formulas to determine token prices based on supply and demand, eliminating the need for traditional order books.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h4>💧 Liquidity Pools</h4>
+                            <p>Users provide token pairs to pools, earning fees from trades. The ratio of tokens determines the exchange rate.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h4>📉 Slippage</h4>
+                            <p>The difference between expected and actual trade prices due to market movement during transaction execution.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h4>🏦 Yield Farming</h4>
+                            <p>Earn rewards by providing liquidity to pools. Returns come from trading fees and additional token incentives.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 Solana DEX Educational Project. Built for learning DeFi concepts.</p>
+                <div class="links">
+                    <a href="https://docs.solana.com" target="_blank">Solana Docs</a>
+                    <a href="https://spl.solana.com" target="_blank">SPL Token Program</a>
+                    <a href="#" onclick="showTutorial()">Tutorial</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Processing transaction...</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
