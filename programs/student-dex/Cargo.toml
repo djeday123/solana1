@@ -1,0 +1,29 @@
+[package]
+name = "student-dex"
+version = "0.1.0"
+description = "Educational Solana DEX for students"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "student_dex"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+test-sbf = []
+
+[dependencies]
+solana-program = "=1.17"
+borsh = "0.10"
+thiserror = "1.0"
+num-derive = "0.4"
+num-traits = "0.2"
+
+[dev-dependencies]
+solana-program-test = "=1.17"
+solana-sdk = "=1.17"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
